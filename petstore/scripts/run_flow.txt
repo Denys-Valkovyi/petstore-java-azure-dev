@@ -1,0 +1,18 @@
+resourceGroupName="denys-rg"
+location="eastus"
+acrName="valkovyipetstorecr"
+tag="v1"
+
+./create-basic-resources.sh $resourceGroupName $location $acrName
+
+##./update-github-secrets.sh $secret
+
+./git-push-tag.sh $tag
+
+##wait until docker images are uploaded to ACR
+./create-container-app.sh $resourceGroupName $location $acrName $tag
+
+./clean-resources.sh $resourceGroupName
+
+##Optionally
+./git-clean-tag.sh $tag
