@@ -32,8 +32,10 @@ petstore/petstoreapp
 petstore/petstoreorderservice
 petstore/petstorepetservice
 petstore/petstoreproductservice
+petstore/petstorefunctions
 
 petstore/petstoreapp/*
 petstore/petstoreorderservice/*
 petstore/petstorepetservice/*
 petstore/petstoreproductservice/*
+petstore/petstorefunctions/*

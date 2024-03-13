@@ -1,18 +1,31 @@
-resourceGroupName="denys-rg"
+resourceGroupName="denys-permanent-rg"
+resourceGroupNameTemp="denys-temporal-rg"
 location="eastus"
 acrName="valkovyipetstorecr"
 tag="v1"
+insightsKey=""
 
 ./create-basic-resources.sh $resourceGroupName $location $acrName
 
-##./update-github-secrets.sh $secret
+secret=$(az acr credential show --name $acrName --query 'passwords[0].value')
+
+./update-github-secrets.sh $secret "petstoreapp"
+./update-github-secrets.sh $secret "petstoreproductservice"
+./update-github-secrets.sh $secret "petstorepetservice"
+./update-github-secrets.sh $secret "petstoreorderservice"
+
 
 ./git-push-tag.sh $tag
 
-##wait until docker images are uploaded to ACR
-./create-container-app.sh $resourceGroupName $location $acrName $tag
 
-./clean-resources.sh $resourceGroupName
+#1.wait until docker images are uploaded to ACR
+#2.UPDATE Application Insights connection string
+az group create --name $resourceGroupNameTemp --location "$location" -o none
+./create-container-app.sh $resourceGroupNameTemp $location $acrName $tag $insightsKey
+
+./clean-resources.sh $resourceGroupNameTemp
+
 
 ##Optionally
+./clean-resources.sh $resourceGroupName
 ./git-clean-tag.sh $tag

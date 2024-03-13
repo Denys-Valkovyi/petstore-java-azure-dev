@@ -1,43 +1,43 @@
 #!/bin/bash
 
-tag="$1"
+message="$1"
 
 cd ..
 cd petstoreapp
 echo "Current directory:"
 pwd
-git tag $tag
-echo "Pushing tag to:"
-git remote show origin | grep "Fetch"
-git push origin $tag
+git add .
+git status
+git commit -m "$message"
+git push
 echo "=============================="
 
 cd ..
 cd petstoreorderservice
 echo "Current directory:"
 pwd
-git tag $tag
-echo "Pushing tag to:"
-git remote show origin | grep "Fetch"
-git push origin $tag
+git add .
+git status
+git commit -m "$message"
+git push
 echo "=============================="
 
 cd ..
 cd petstorepetservice
 echo "Current directory:"
 pwd
-git tag $tag
-echo "Pushing tag to:"
-git remote show origin | grep "Fetch"
-git push origin $tag
+git add .
+git status
+git commit -m "$message"
+git push
 echo "=============================="
 
 cd ..
 cd petstoreproductservice
 echo "Current directory:"
 pwd
-git tag $tag
-echo "Pushing tag to:"
-git remote show origin | grep "Fetch"
-git push origin $tag
+git add .
+git status
+git commit -m "$message"
+git push
 echo "=============================="
