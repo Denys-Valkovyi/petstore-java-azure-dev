@@ -41,3 +41,13 @@ echo "Deleting tag from:"
 git remote show origin | grep "Fetch"
 git push --delete origin $tag
 echo "=============================="
+
+cd ..
+cd petstorefunctions
+echo "Current directory:"
+pwd
+git tag --delete $tag
+echo "Deleting tag from:"
+git remote show origin | grep "Fetch"
+git push --delete origin $tag
+echo "=============================="

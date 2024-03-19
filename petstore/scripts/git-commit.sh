@@ -41,3 +41,13 @@ git status
 git commit -m "$message"
 git push
 echo "=============================="
+
+cd ..
+cd petstorefunctions
+echo "Current directory:"
+pwd
+git add .
+git status
+git commit -m "$message"
+git push
+echo "=============================="

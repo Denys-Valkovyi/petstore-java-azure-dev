@@ -1,10 +1,11 @@
 #!/bin/bash
-containerAppEnvName="denys-container-app-environment"
 resourceGroupName="$1"
 location="$2"
 acrName="$3"
 tag="$4"
 insightsKey="$5"
+containerAppEnvName="$6"
+httpsFunctionUrl="$7"
 
 echo "Started to create: Container App Env"
 az containerapp env create -n $containerAppEnvName -g $resourceGroupName --location $location --enable-workload-profiles false
@@ -36,7 +37,7 @@ petServiceURL=$(az containerapp show --resource-group $resourceGroupName --name 
 httpsPetServiceURL="https://$petServiceURL"
 
 echo "Started to update environment variables"
-az containerapp update -n "denys-app-$location" -g $resourceGroupName --set-env-vars "PETSTOREPETSERVICE_URL=$httpsPetServiceURL" "PETSTOREPRODUCTSERVICE_URL=$httpsProductServiceURL" "PETSTOREORDERSERVICE_URL=$httpsOrderServiceURL"
+az containerapp update -n "denys-app-$location" -g $resourceGroupName --set-env-vars "PETSTOREPETSERVICE_URL=$httpsPetServiceURL" "PETSTOREPRODUCTSERVICE_URL=$httpsProductServiceURL" "PETSTOREORDERSERVICE_URL=$httpsOrderServiceURL" "PETSTORERESERVERSERVICE_URL=$httpsFunctionUrl"
  
 
 

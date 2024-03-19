@@ -41,3 +41,13 @@ echo "Pushing tag to:"
 git remote show origin | grep "Fetch"
 git push origin $tag
 echo "=============================="
+
+cd ..
+cd petstorefunctions
+echo "Current directory:"
+pwd
+git tag $tag
+echo "Pushing tag to:"
+git remote show origin | grep "Fetch"
+git push origin $tag
+echo "=============================="

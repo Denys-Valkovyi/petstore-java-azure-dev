@@ -4,24 +4,39 @@ location="eastus"
 acrName="valkovyipetstorecr"
 tag="v1"
 insightsKey=""
+containerAppEnvName="denys-container-app-environment"
+storageAccountName="denyspetstoresa"
+functionAppName="denysorderreserver"
+httpsFunctionUrl=https://$functionAppName.azurewebsites.net
 
-./create-basic-resources.sh $resourceGroupName $location $acrName
 
-secret=$(az acr credential show --name $acrName --query 'passwords[0].value')
+./create-basic-resources.sh $resourceGroupName  $location $acrName
+
+secret=$(az acr credential show --name $acrName --query 'passwords[0].value' -o tsv)
 
 ./update-github-secrets.sh $secret "petstoreapp"
 ./update-github-secrets.sh $secret "petstoreproductservice"
 ./update-github-secrets.sh $secret "petstorepetservice"
 ./update-github-secrets.sh $secret "petstoreorderservice"
+./update-github-secrets.sh $secret "petstorefunctions"
 
 
 ./git-push-tag.sh $tag
 
+az group create --name $resourceGroupNameTemp --location $location
+
+./create-storage-account.sh $resourceGroupNameTemp $location $storageAccountName
 
 #1.wait until docker images are uploaded to ACR
+./create-function-app.sh $resourceGroupNameTemp $location $acrName $tag $storageAccountName $secret $functionAppName
+
+
 #2.UPDATE Application Insights connection string
-az group create --name $resourceGroupNameTemp --location "$location" -o none
-./create-container-app.sh $resourceGroupNameTemp $location $acrName $tag $insightsKey
+#OPTION A: containers apps
+./create-container-app.sh $resourceGroupNameTemp $location $acrName $tag $insightsKey $containerAppEnvName $httpsFunctionUrl
+
+#OPTION B: app service
+./create-appservice-app.sh $resourceGroupNameTemp $location $acrName $tag $insightsKey $httpsFunctionUrl
 
 ./clean-resources.sh $resourceGroupNameTemp
 
